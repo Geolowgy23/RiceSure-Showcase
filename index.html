@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RiceSure — Field Agronomic Vision Intelligence</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+            mono: ['"Space Grotesk"', 'monospace'],
+          },
+          colors: {
+            botanical: {
+              pitch: '#050A06',
+              surface: '#0B150E',
+              elevated: '#112015',
+              border: 'rgba(196, 231, 141, 0.12)',
+              borderHover: 'rgba(196, 231, 141, 0.55)',
+              sprout: '#C4E78D',
+              leaf: '#7EAF5D',
+              muted: '#7A9682',
+            }
+          },
+          boxShadow: {
+            'card-highlight': '0 15px 35px -8px rgba(0, 0, 0, 0.7), 0 0 25px -4px rgba(196, 231, 141, 0.25)',
+          },
+          animation: {
+            'float-gentle': 'floatGentle 6s ease-in-out infinite',
+          },
+          keyframes: {
+            floatGentle: {
+              '0%, 100%': { transform: 'translateY(0px)' },
+              '50%': { transform: 'translateY(-8px)' },
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    .vignette-backdrop {
+      background: radial-gradient(circle at center, rgba(5, 10, 6, 0.35) 0%, rgba(5, 10, 6, 0.95) 100%);
+    }
+    .vertical-mode {
+      writing-mode: vertical-rl;
+    }
+    #certModal.active #modalBox {
+      transform: scale(1);
+      opacity: 1;
+    }
+    #modalBox {
+      transform: scale(0.95);
+      opacity: 0;
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+  </style>
+</head>
+<body class="bg-botanical-pitch text-slate-100 font-sans antialiased selection:bg-botanical-sprout selection:text-black overflow-x-hidden relative">
+
+  <!-- Ambient Backdrop Image Layer -->
+  <div class="fixed inset-0 pointer-events-none z-0">
+    <div 
+      class="absolute inset-0 bg-cover bg-center opacity-25 mix-blend-luminosity scale-105 filter blur-[1.5px]"
+      style="background-image: url('assets/background/bg1.png');">
+    </div>
+    <div class="absolute inset-0 vignette-backdrop"></div>
+  </div>
+
+  <!-- Left Side Technical Navigation Rail -->
+  <aside class="fixed left-6 top-1/2 -translate-y-1/2 z-40 hidden xl:flex flex-col items-center gap-6 font-mono text-[10px] tracking-widest text-botanical-muted">
+    <div class="w-2.5 h-2.5 border border-botanical-sprout rotate-45 mb-2"></div>
+    <span class="text-botanical-sprout font-bold">01</span>
+    <span class="hover:text-white transition-colors cursor-pointer">02</span>
+    <span class="hover:text-white transition-colors cursor-pointer">03</span>
+    <span class="hover:text-white transition-colors cursor-pointer">04</span>
+    <span class="hover:text-white transition-colors cursor-pointer">05</span>
+    <div class="h-10 w-[1px] bg-botanical-border mt-2"></div>
+    <span class="vertical-mode uppercase tracking-[0.3em] text-[9px] mt-2">RICESURE</span>
+  </aside>
+
+  <!-- Right Geometric Line-Art Seed Emblem -->
+  <div class="fixed right-8 bottom-12 pointer-events-none z-20 hidden lg:block opacity-60">
+    <svg class="w-24 h-56 text-botanical-sprout stroke-current fill-none stroke-[2]" viewBox="0 0 100 240">
+      <path d="M50 20 L50 220" stroke-linecap="round" stroke-dasharray="2 6"/>
+      <path d="M50 40 L25 80 L50 100 L75 80 Z"/>
+      <path d="M50 100 L25 140 L50 160 L75 140 Z"/>
+      <path d="M50 160 L25 200 L50 220 L75 200 Z"/>
+      <line x1="20" y1="40" x2="20" y2="120" stroke-linecap="round"/>
+      <line x1="80" y1="40" x2="80" y2="120" stroke-linecap="round"/>
+    </svg>
+  </div>
+
+  <!-- Navigation Header (Walay border o kahon ang logo) -->
+  <header class="fixed top-0 left-0 right-0 z-50 bg-botanical-pitch/80 backdrop-blur-md border-b border-botanical-border">
+    <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+      <a href="#" class="flex items-center gap-3.5 group">
+        <!-- Transparent Logo Container nga walay border ug background -->
+        <div class="h-12 w-auto flex items-center justify-center">
+          <img 
+            src="logo/full-logo.png" 
+            alt="RiceSure Logo" 
+            class="h-10 w-auto object-contain filter group-hover:scale-105 transition-transform"
+            onerror="this.onerror=null; this.src='assets/logo/full-logo.png';"
+          />
+        </div>
+        <div class="flex flex-col">
+          <span class="font-mono text-sm uppercase tracking-[0.25em] font-bold text-white group-hover:text-botanical-sprout transition-colors">RiceSure</span>
+          <span class="text-[9px] uppercase tracking-widest text-botanical-sprout font-medium">Grain Diagnostics AI</span>
+        </div>
+      </a>
+
+      <nav class="hidden md:flex items-center gap-8 text-[11px] font-mono tracking-widest uppercase text-botanical-muted">
+        <a href="#overview" class="hover:text-botanical-sprout transition-colors">Overview</a>
+        <a href="#mobile-showcase" class="hover:text-botanical-sprout transition-colors text-white font-medium">Dual Interface</a>
+        <a href="#diagnostics" class="hover:text-botanical-sprout transition-colors">Field Trays</a>
+        <a href="#records" class="hover:text-botanical-sprout transition-colors">Citations</a>
+        <a href="#team" class="hover:text-botanical-sprout transition-colors">Investigators</a>
+      </nav>
+
+      <a href="https://www.spiedigitallibrary.org/conference-proceedings-of-spie/14298/3119413/A-CNN-based-biological-image-processing-and-multimedia-framework-for/10.1117/12.3119413.full" 
+         target="_blank" rel="noopener noreferrer" 
+         class="text-[11px] font-mono uppercase tracking-widest px-4 py-2 border border-botanical-sprout/60 text-botanical-sprout hover:bg-botanical-sprout hover:text-botanical-pitch transition-all font-semibold">
+        SPIE Paper &rarr;
+      </a>
+    </div>
+  </header>
+
+  <main class="relative z-10 pt-28">
+    <!-- Hero Quote Layout with Clean Transparent Centerpiece Logo -->
+    <section id="overview" class="min-h-[85vh] flex items-center justify-center px-6 py-20 text-center relative">
+      <div class="max-w-4xl mx-auto">
+        
+        <!-- Centerpiece Transparent Logo nga walay box, walay circle, ug walay borders -->
+        <div class="mx-auto mb-8 flex items-center justify-center">
+          <img 
+            src="logo/full-logo.png" 
+            alt="RiceSure Core Brand Logo" 
+            class="h-28 w-auto object-contain drop-shadow-[0_0_20px_rgba(196,231,141,0.25)] hover:scale-105 transition-transform duration-300"
+            onerror="this.onerror=null; this.src='assets/logo/full-logo.png';"
+          />
+        </div>
+
+        <div class="inline-flex items-center gap-3 font-mono text-xs uppercase tracking-[0.3em] text-botanical-sprout mb-6">
+          <span class="h-[1px] w-6 bg-botanical-sprout/60"></span>
+          <span>HOLY CROSS OF DAVAO COLLEGE // PAPER ID PP531</span>
+          <span class="h-[1px] w-6 bg-botanical-sprout/60"></span>
+        </div>
+
+        <h1 class="text-3xl sm:text-5xl lg:text-6xl font-light uppercase tracking-tight text-white leading-tight font-sans">
+          &ldquo;AUTHENTIC SEED PURITY CANNOT BE HARVESTED WITHOUT SYSTEMATIC FIELD VERIFICATION.&rdquo;
+        </h1>
+
+        <p class="mt-8 text-botanical-muted text-sm sm:text-base max-w-2xl mx-auto leading-relaxed font-light">
+          A biological convolutional neural network framework designed to detect cultivar adulteration kernel by kernel directly over sample flatbeds without laboratory chemical assays.
+        </p>
+
+        <div class="mt-12 flex flex-wrap justify-center gap-4">
+          <a href="#mobile-showcase" class="px-8 py-3.5 border border-botanical-sprout text-botanical-sprout font-mono text-xs uppercase tracking-[0.25em] hover:bg-botanical-sprout hover:text-botanical-pitch transition-all">
+            Explore Mobile Interface
+          </a>
+          <a href="#diagnostics" class="px-8 py-3.5 border border-botanical-border text-botanical-muted font-mono text-xs uppercase tracking-[0.25em] hover:border-botanical-sprout/60 hover:text-white transition-all">
+            Field Tray Records
+          </a>
+        </div>
+
+        <div class="grid grid-cols-3 gap-6 mt-16 pt-10 border-t border-botanical-border/60 max-w-2xl mx-auto font-mono text-center">
+          <div>
+            <span class="text-2xl font-bold text-white block">03</span>
+            <span class="text-[10px] uppercase tracking-widest text-botanical-muted mt-1 block">Distinctions</span>
+          </div>
+          <div>
+            <span class="text-2xl font-bold text-botanical-sprout block">ICMIP '26</span>
+            <span class="text-[10px] uppercase tracking-widest text-botanical-muted mt-1 block">Sapporo, Japan</span>
+          </div>
+          <div>
+            <span class="text-2xl font-bold text-white block">Edge AI</span>
+            <span class="text-[10px] uppercase tracking-widest text-botanical-muted mt-1 block">On-Device CNN</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- DUAL SHOWCASE SECTION -->
+    <section id="mobile-showcase" class="py-24 border-y border-botanical-border bg-botanical-surface/50">
+      <div class="max-w-7xl mx-auto px-6">
+        
+        <div class="text-center max-w-2xl mx-auto mb-16">
+          <span class="text-[11px] font-mono uppercase tracking-[0.3em] text-botanical-sprout block mb-2">FIELD INTERFACE ARCHITECTURE</span>
+          <h2 class="text-2xl sm:text-4xl font-light uppercase tracking-tight text-white">
+            Diagnostic Template & Live Execution
+          </h2>
+          <p class="text-botanical-muted text-xs sm:text-sm mt-3 font-light leading-relaxed">
+            Side-by-side comparison between the primary diagnostic home template and the actual continuous runtime video execution in the field.
+          </p>
+        </div>
+
+        <div class="grid lg:grid-cols-12 gap-10 items-center justify-center">
+          
+          <!-- Component 1: HomeTemplate -->
+          <div class="lg:col-span-6 flex flex-col items-center">
+            <div class="w-full max-w-[310px] rounded-[48px] border border-botanical-border bg-botanical-pitch p-3 shadow-2xl animate-float-gentle">
+              <div class="w-24 h-4 bg-botanical-surface rounded-full border border-botanical-border/40 mx-auto mb-2 flex items-center justify-between px-3">
+                <span class="w-1.5 h-1.5 rounded-full bg-botanical-pitch"></span>
+                <span class="w-1.5 h-1.5 rounded-full bg-botanical-sprout animate-pulse"></span>
+              </div>
+
+              <div class="rounded-[38px] overflow-hidden bg-black aspect-[9/19] border border-botanical-border/60">
+                <img 
+                  src="assets/HomeTemplate/Template1.png" 
+                  alt="RiceSure Mobile Template Interface" 
+                  class="w-full h-full object-cover"
+                  onerror="this.src='https://images.unsplash.com/photo-1586201375761-83865001e31c?auto=format&fit=crop&w=600&q=80'"
+                />
+              </div>
+
+              <div class="w-24 h-1 bg-botanical-border rounded-full mx-auto mt-3"></div>
+            </div>
+
+            <div class="mt-6 text-center">
+              <span class="font-mono text-xs uppercase tracking-widest text-botanical-sprout font-semibold block">PLATE 01 // HOME TEMPLATE</span>
+              <p class="text-botanical-muted text-xs mt-1 font-light">Calibrated capture interface and telemetry control dashboard.</p>
+            </div>
+          </div>
+
+          <!-- Component 2: Live Video Demonstration -->
+          <div class="lg:col-span-6 flex flex-col items-center">
+            <div class="w-full max-w-[310px] rounded-[48px] border border-botanical-border bg-botanical-pitch p-3 shadow-2xl">
+              <div class="w-24 h-4 bg-botanical-surface rounded-full border border-botanical-border/40 mx-auto mb-2 flex items-center justify-between px-3">
+                <span class="w-1.5 h-1.5 rounded-full bg-botanical-pitch"></span>
+                <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping"></span>
+              </div>
+
+              <div class="rounded-[38px] overflow-hidden bg-black aspect-[9/19] border border-botanical-border/60">
+                <video 
+                  id="mobileScreenVideo" 
+                  class="w-full h-full object-cover" 
+                  controls 
+                  autoplay 
+                  muted 
+                  loop 
+                  playsinline 
+                  preload="auto"
+                  poster="assets/showcasing/test_selectoptioncam or pic.jpg"
+                >
+                  <source src="videmo/demo.mp4" type="video/mp4">
+                  Your browser does not support HTML5 video streaming.
+                </video>
+              </div>
+
+              <div class="w-24 h-1 bg-botanical-border rounded-full mx-auto mt-3"></div>
+            </div>
+
+            <div class="mt-6 text-center">
+              <span class="font-mono text-xs uppercase tracking-widest text-botanical-sprout font-semibold block">PLATE 02 // FIELD DEMO REEL</span>
+              <p class="text-botanical-muted text-xs mt-1 font-light">Real-time edge neural inference and boundary segmentation in action.</p>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Field Diagnostics Showcase -->
+    <section id="diagnostics" class="py-24 max-w-7xl mx-auto px-6">
+      <div class="max-w-2xl mb-14">
+        <span class="text-[11px] font-mono uppercase tracking-[0.3em] text-botanical-sprout block mb-2">OPTICAL EVALUATIONS</span>
+        <h2 class="text-2xl sm:text-4xl font-light uppercase tracking-tight text-white">
+          Specimen Tray Diagnostics
+        </h2>
+        <p class="text-botanical-muted text-xs sm:text-sm mt-3 font-light">
+          Optical grain segmentation separating compliant batches from commercial adulterations.
+        </p>
+      </div>
+
+      <div class="grid md:grid-cols-3 gap-8">
+        <!-- Step 1 -->
+        <div class="border border-botanical-border bg-botanical-surface/40 p-5 flex flex-col justify-between hover:border-botanical-sprout/60 transition-colors">
+          <div>
+            <div class="aspect-[9/16] overflow-hidden border border-botanical-border bg-black">
+              <img 
+                src="assets/showcasing/test_selectoptioncam or pic.jpg" 
+                alt="Optical Ingestion Interface" 
+                class="w-full h-full object-cover"
+                onerror="this.src='https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?auto=format&fit=crop&w=600&q=80'"
+              />
+            </div>
+            <span class="inline-block mt-4 text-[10px] font-mono uppercase tracking-widest text-botanical-sprout">OPTICAL INTAKE</span>
+            <h3 class="text-base font-medium text-white mt-1">Tray Flatbed Ingestion</h3>
+            <p class="text-botanical-muted text-xs mt-2 font-light leading-relaxed">
+              Standardized optical stream ingestion accommodating natural and controlled field lighting setups.
+            </p>
+          </div>
+          <div class="mt-6 pt-3 border-t border-botanical-border font-mono text-[10px] text-botanical-muted">
+            MODE: LIVE FLATBED STREAM
+          </div>
+        </div>
+
+        <!-- Step 2 -->
+        <div class="border border-botanical-border bg-botanical-surface/40 p-5 flex flex-col justify-between hover:border-red-400/50 transition-colors">
+          <div>
+            <div class="aspect-[9/16] overflow-hidden border border-botanical-border bg-black">
+              <img 
+                src="assets/showcasing/test80%25adulterated.jpg" 
+                alt="Adulterated Harvest Run" 
+                class="w-full h-full object-cover"
+                onerror="this.onerror=null; this.src='assets/showcasing/test80_adulterated.jpg'; if(!this.src) this.src='https://images.unsplash.com/photo-1586201375761-83865001e31c?auto=format&fit=crop&w=600&q=80';"
+              />
+            </div>
+            <span class="inline-block mt-4 text-[10px] font-mono uppercase tracking-widest text-red-400">ANOMALY DETECTED</span>
+            <h3 class="text-base font-medium text-white mt-1">Cultivar Adulteration Alert</h3>
+            <p class="text-botanical-muted text-xs mt-2 font-light leading-relaxed">
+              Detects commercial grain mixing (e.g., Red Rice cut with low-tier grains) flagged at ~83.8% batch purity.
+            </p>
+          </div>
+          <div class="mt-6 pt-3 border-t border-botanical-border font-mono text-[10px] text-red-400">
+            RECORD: 83.8% PURITY RATING
+          </div>
+        </div>
+
+        <!-- Step 3 -->
+        <div class="border border-botanical-border bg-botanical-surface/40 p-5 flex flex-col justify-between hover:border-botanical-sprout/60 transition-colors">
+          <div>
+            <div class="aspect-[9/16] overflow-hidden border border-botanical-border bg-black">
+              <img 
+                src="assets/showcasing/test100%25purerice.jpg" 
+                alt="Pure Grain Verification" 
+                class="w-full h-full object-cover"
+                onerror="this.onerror=null; this.src='assets/showcasing/test100_purerice.jpg'; if(!this.src) this.src='https://images.unsplash.com/photo-1536304929831-ee1ca9d44906?auto=format&fit=crop&w=600&q=80';"
+              />
+            </div>
+            <span class="inline-block mt-4 text-[10px] font-mono uppercase tracking-widest text-botanical-sprout">MONOCULTURE CERTIFIED</span>
+            <h3 class="text-base font-medium text-white mt-1">100% Homogeneous Batch</h3>
+            <p class="text-botanical-muted text-xs mt-2 font-light leading-relaxed">
+              Confirms zero contaminant kernel variations, protecting batch price validation and cultivar integrity.
+            </p>
+          </div>
+          <div class="mt-6 pt-3 border-t border-botanical-border font-mono text-[10px] text-botanical-sprout">
+            RECORD: 100.0% PURITY RATING
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Accolades & Conferences -->
+    <section id="records" class="py-24 border-t border-botanical-border bg-botanical-surface/20">
+      <div class="max-w-7xl mx-auto px-6">
+        <div class="max-w-2xl mb-14">
+          <span class="text-[11px] font-mono uppercase tracking-[0.3em] text-botanical-sprout block mb-2">SCIENTIFIC CITATIONS</span>
+          <h2 class="text-2xl sm:text-4xl font-light uppercase tracking-tight text-white">
+            Conference Accolades
+          </h2>
+          <p class="text-botanical-muted text-xs sm:text-sm mt-3 font-light">
+            Select any formal recognition document to inspect high-resolution verification records.
+          </p>
+        </div>
+
+        <div class="grid md:grid-cols-3 gap-8">
+          
+          <!-- Award 1: certificate1.png -->
+          <button 
+            type="button" 
+            onclick="openCertModal('assets/Certificates/certificate1.png', 'ICMIP 2026 // Sapporo, Japan', 'Presented at the 11th International Conference on Multimedia and Image Processing, co-sponsored by Ritsumeikan University and supported by Niigata University, University of the Ryukyus, UNIMAS, and WOU.')"
+            class="text-left border border-botanical-border bg-botanical-pitch p-6 rounded-2xl hover:border-botanical-borderHover hover:shadow-card-highlight hover:-translate-y-2 transition-all duration-300 flex flex-col justify-between group cursor-pointer focus:outline-none"
+          >
+            <div>
+              <div class="aspect-[4/3] overflow-hidden rounded-xl border border-botanical-border bg-black relative">
+                <img 
+                  src="assets/Certificates/certificate1.png" 
+                  alt="ICMIP Conference Certificate" 
+                  class="w-full h-full object-cover group-hover:scale-108 transition-transform duration-500 opacity-90 group-hover:opacity-100"
+                  onerror="this.src='https://images.unsplash.com/photo-1589829545856-d10d557cf95f?auto=format&fit=crop&w=600&q=80'"
+                />
+                <div class="absolute inset-0 bg-botanical-pitch/30 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                  <span class="px-3.5 py-1.5 rounded-full bg-botanical-sprout text-black font-mono text-[10px] font-bold tracking-wider uppercase shadow-md scale-95 group-hover:scale-100 transition-transform">
+                    Click to Zoom
+                  </span>
+                </div>
+              </div>
+
+              <span class="inline-block mt-5 text-[10px] font-mono uppercase tracking-widest text-botanical-sprout">SAPPORO, JAPAN</span>
+              <h3 class="text-base font-medium text-white mt-1 group-hover:text-botanical-sprout transition-colors">International Oral Presentation</h3>
+              <p class="text-botanical-muted text-xs mt-2 font-light leading-relaxed">
+                Presented at the 11th International Conference on Multimedia and Image Processing (ICMIP 2026).
+              </p>
+            </div>
+            <div class="mt-6 pt-3 border-t border-botanical-border font-mono text-[10px] text-botanical-muted flex items-center justify-between">
+              <span>DATE: APRIL 25–27, 2026</span>
+              <span class="text-botanical-sprout opacity-0 group-hover:opacity-100 transition-opacity">&rarr;</span>
+            </div>
+          </button>
+
+          <!-- Award 2: certificate2.jpg -->
+          <button 
+            type="button" 
+            onclick="openCertModal('assets/Certificates/certificate2.jpg', 'SDG 2 Zero Hunger // TechnoFair 2026', 'Recognized under Sustainable Development Goal 2 for RiceSure\'s contribution to variety purity detection using image-based CNN classification.')"
+            class="text-left border border-botanical-border bg-botanical-pitch p-6 rounded-2xl hover:border-botanical-borderHover hover:shadow-card-highlight hover:-translate-y-2 transition-all duration-300 flex flex-col justify-between group cursor-pointer focus:outline-none"
+          >
+            <div>
+              <div class="aspect-[4/3] overflow-hidden rounded-xl border border-botanical-border bg-black relative">
+                <img 
+                  src="assets/Certificates/certificate2.jpg" 
+                  alt="TechnoFair Certificate" 
+                  class="w-full h-full object-cover group-hover:scale-108 transition-transform duration-500 opacity-90 group-hover:opacity-100"
+                  onerror="this.src='https://images.unsplash.com/photo-1589829545856-d10d557cf95f?auto=format&fit=crop&w=600&q=80'"
+                />
+                <div class="absolute inset-0 bg-botanical-pitch/30 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                  <span class="px-3.5 py-1.5 rounded-full bg-botanical-sprout text-black font-mono text-[10px] font-bold tracking-wider uppercase shadow-md scale-95 group-hover:scale-100 transition-transform">
+                    Click to Zoom
+                  </span>
+                </div>
+              </div>
+
+              <span class="inline-block mt-5 text-[10px] font-mono uppercase tracking-widest text-botanical-sprout">SDG 2 · ZERO HUNGER</span>
+              <h3 class="text-base font-medium text-white mt-1 group-hover:text-botanical-sprout transition-colors">Second Runner-Up, TechnoFair 2026</h3>
+              <p class="text-botanical-muted text-xs mt-2 font-light leading-relaxed">
+                Recognized under Sustainable Development Goal 2 for grain variety purity assurance.
+              </p>
+            </div>
+            <div class="mt-6 pt-3 border-t border-botanical-border font-mono text-[10px] text-botanical-muted flex items-center justify-between">
+              <span>DATE: MARCH 17–18, 2026</span>
+              <span class="text-botanical-sprout opacity-0 group-hover:opacity-100 transition-opacity">&rarr;</span>
+            </div>
+          </button>
+
+          <!-- Award 3: certificate3.jpg -->
+          <button 
+            type="button" 
+            onclick="openCertModal('assets/Certificates/certificate3.jpg', '2nd Best Research Paper // CET Conversazione 2026', 'Awarded during the 2026 CET Research Conference, Conversazione 2026: Uniting Ideas, Building Partnerships, Powering a Sustainable Future.')"
+            class="text-left border border-botanical-border bg-botanical-pitch p-6 rounded-2xl hover:border-botanical-borderHover hover:shadow-card-highlight hover:-translate-y-2 transition-all duration-300 flex flex-col justify-between group cursor-pointer focus:outline-none"
+          >
+            <div>
+              <div class="aspect-[4/3] overflow-hidden rounded-xl border border-botanical-border bg-black relative">
+                <img 
+                  src="assets/Certificates/certificate3.jpg" 
+                  alt="CET Research Paper Award" 
+                  class="w-full h-full object-cover group-hover:scale-108 transition-transform duration-500 opacity-90 group-hover:opacity-100"
+                  onerror="this.src='https://images.unsplash.com/photo-1589829545856-d10d557cf95f?auto=format&fit=crop&w=600&q=80'"
+                />
+                <div class="absolute inset-0 bg-botanical-pitch/30 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                  <span class="px-3.5 py-1.5 rounded-full bg-botanical-sprout text-black font-mono text-[10px] font-bold tracking-wider uppercase shadow-md scale-95 group-hover:scale-100 transition-transform">
+                    Click to Zoom
+                  </span>
+                </div>
+              </div>
+
+              <span class="inline-block mt-5 text-[10px] font-mono uppercase tracking-widest text-botanical-sprout">CET RESEARCH FORUM</span>
+              <h3 class="text-base font-medium text-white mt-1 group-hover:text-botanical-sprout transition-colors">2nd Best Research Paper</h3>
+              <p class="text-botanical-muted text-xs mt-2 font-light leading-relaxed">
+                Conferred at Conversazione 2026 for machine intelligence applied to food agricultural pipelines.
+              </p>
+            </div>
+            <div class="mt-6 pt-3 border-t border-botanical-border font-mono text-[10px] text-botanical-muted flex items-center justify-between">
+              <span>DATE: MAY 13, 2026</span>
+              <span class="text-botanical-sprout opacity-0 group-hover:opacity-100 transition-opacity">&rarr;</span>
+            </div>
+          </button>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- Research Authors -->
+    <section id="team" class="py-24 max-w-7xl mx-auto px-6 border-t border-botanical-border">
+      <div class="max-w-2xl mb-14">
+        <span class="text-[11px] font-mono uppercase tracking-[0.3em] text-botanical-sprout block mb-2">INVESTIGATORS</span>
+        <h2 class="text-2xl sm:text-4xl font-light uppercase tracking-tight text-white">
+          The RiceSure Project Team
+        </h2>
+        <p class="text-botanical-muted text-xs sm:text-sm mt-3 font-mono">
+          Holy Cross of Davao College // Bachelor of Science in Information Technology
+        </p>
+      </div>
+
+      <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <!-- Crown -->
+        <div class="border border-botanical-border bg-botanical-surface/40 p-6 rounded-2xl hover:border-botanical-sprout hover:-translate-y-1.5 transition-all duration-300">
+          <div class="w-20 h-20 border border-botanical-border rounded-xl overflow-hidden mb-4 bg-black">
+            <img src="assets/teams/crown.png" alt="Crown James Cedeño" class="w-full h-full object-cover" onerror="this.src='https://ui-avatars.com/api/?name=Crown+Cedeno&background=0B150E&color=C4E78D'"/>
+          </div>
+          <h4 class="font-medium text-white text-base">Crown James Cedeño</h4>
+          <span class="font-mono text-xs text-botanical-sprout block mt-1 uppercase tracking-wider">Fullstack Lead</span>
+          <p class="text-botanical-muted text-xs mt-3 font-light leading-relaxed">
+            Mobile application architecture, native camera streaming integration, and inference backplane.
+          </p>
+        </div>
+
+        <!-- Jazrel -->
+        <div class="border border-botanical-border bg-botanical-surface/40 p-6 rounded-2xl hover:border-botanical-sprout hover:-translate-y-1.5 transition-all duration-300">
+          <div class="w-20 h-20 border border-botanical-border rounded-xl overflow-hidden mb-4 bg-black">
+            <img src="assets/teams/shan.png" alt="Jazrel Shan Kurvy Balbuena" class="w-full h-full object-cover" onerror="this.src='https://ui-avatars.com/api/?name=Shan+Balbuena&background=0B150E&color=C4E78D'"/>
+          </div>
+          <h4 class="font-medium text-white text-base">Jazrel Shan Kurvy Balbuena</h4>
+          <span class="font-mono text-xs text-botanical-sprout block mt-1 uppercase tracking-wider">UI/UX Designer</span>
+          <p class="text-botanical-muted text-xs mt-3 font-light leading-relaxed">
+            Ergonomics for outdoor high-glare field environments and intuitive purity distribution displays.
+          </p>
+        </div>
+
+        <!-- Geovin (Dataset Engineer) -->
+        <div class="border border-botanical-border bg-botanical-surface/40 p-6 rounded-2xl hover:border-botanical-sprout hover:-translate-y-1.5 transition-all duration-300">
+          <div class="w-20 h-20 border border-botanical-border rounded-xl overflow-hidden mb-4 bg-black">
+            <img src="assets/teams/geovin.jpg" alt="Geovin Josh O. Algusar" class="w-full h-full object-cover" onerror="this.src='https://ui-avatars.com/api/?name=Geovin+Algusar&background=0B150E&color=C4E78D'"/>
+          </div>
+          <h4 class="font-medium text-white text-base">Geovin Josh O. Algusar</h4>
+          <span class="font-mono text-xs text-botanical-sprout block mt-1 uppercase tracking-wider">Dataset Engineer</span>
+          <p class="text-botanical-muted text-xs mt-3 font-light leading-relaxed">
+            Biological grain specimen collection, dataset pipeline augmentation, and ground-truth boundary labeling.
+          </p>
+        </div>
+
+        <!-- Drexler -->
+        <div class="border border-botanical-border bg-botanical-surface/40 p-6 rounded-2xl hover:border-botanical-sprout hover:-translate-y-1.5 transition-all duration-300">
+          <div class="w-20 h-20 border border-botanical-border rounded-xl overflow-hidden mb-4 bg-black">
+            <img src="assets/teams/drexler.png" alt="Drexler Van R. Arroyo" class="w-full h-full object-cover" onerror="this.src='https://ui-avatars.com/api/?name=Drexler+Arroyo&background=0B150E&color=C4E78D'"/>
+          </div>
+          <h4 class="font-medium text-white text-base">Drexler Van R. Arroyo</h4>
+          <span class="font-mono text-xs text-botanical-sprout block mt-1 uppercase tracking-wider">Document & Papers</span>
+          <p class="text-botanical-muted text-xs mt-3 font-light leading-relaxed">
+            Formal manuscript drafting, statistical validation synthesis, and SPIE peer conference proceedings.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Publication Citation Section -->
+    <section class="py-20 border-t border-botanical-border bg-botanical-surface/40">
+      <div class="max-w-4xl mx-auto px-6 text-center">
+        <span class="text-xs font-mono uppercase tracking-[0.3em] text-botanical-sprout block mb-3 font-semibold">INTERNATIONAL PROCEEDINGS CITATION</span>
+        <h3 class="text-xl sm:text-2xl font-light uppercase tracking-tight text-white leading-relaxed font-sans">
+          &ldquo;RiceSure: A CNN-based Biological Image Processing and Multimedia Framework for Rice Grain Purity Analysis Using Enhanced Mobile Imaging&rdquo;
+        </h3>
+        <p class="font-mono text-xs text-botanical-muted mt-4">
+          Published in Proceedings of SPIE · Paper ID PP531 · Sapporo, Japan
+        </p>
+        <div class="mt-8 flex justify-center">
+          <a 
+            href="https://doi.org/10.1117/12.3119413" 
+            target="_blank" rel="noopener noreferrer" 
+            class="px-8 py-3.5 border border-botanical-sprout text-botanical-sprout font-mono text-xs uppercase tracking-[0.2em] hover:bg-botanical-sprout hover:text-botanical-pitch transition-all font-semibold"
+          >
+            Read On SPIE Digital Library
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer with Clean Transparent Logo -->
+  <footer class="py-12 border-t border-botanical-border bg-botanical-pitch font-mono text-xs text-botanical-muted px-6">
+    <div class="max-w-7xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-6 text-center sm:text-left">
+      <div class="flex items-center gap-3">
+        <img 
+          src="logo/full-logo.png" 
+          alt="RiceSure" 
+          class="h-7 w-auto opacity-80"
+          onerror="this.onerror=null; this.src='assets/logo/full-logo.png';"
+        />
+        <span>&copy; 2026 RiceSure Research Group // Holy Cross of Davao College</span>
+      </div>
+      <div>RESEARCH RECORD ID: PP531</div>
+    </div>
+  </footer>
+
+  <!-- Lightbox Modal for Certificates -->
+  <div id="certModal" class="fixed inset-0 z-50 bg-black/90 backdrop-blur-md hidden items-center justify-center p-4">
+    <div id="modalBox" class="relative max-w-3xl w-full bg-botanical-pitch border border-botanical-border p-6 rounded-3xl text-white font-mono shadow-2xl">
+      <button onclick="closeCertModal()" class="absolute top-4 right-4 h-9 w-9 rounded-full border border-botanical-border flex items-center justify-center hover:bg-botanical-surface text-botanical-muted hover:text-white transition-colors">
+        &times;
+      </button>
+      <div class="rounded-2xl border border-botanical-border bg-black max-h-[60vh] flex items-center justify-center mb-4 overflow-hidden p-2">
+        <img id="modalImg" src="" alt="Certificate View" class="max-h-[56vh] w-auto object-contain block mx-auto rounded-xl"/>
+      </div>
+      <h3 id="modalTitle" class="text-base font-semibold text-botanical-sprout"></h3>
+      <p id="modalDesc" class="text-xs text-botanical-muted mt-2 leading-relaxed font-sans font-light"></p>
+    </div>
+  </div>
+
+  <script>
+    const modal = document.getElementById('certModal');
+
+    function openCertModal(imageSrc, title, description) {
+      document.getElementById('modalImg').src = imageSrc;
+      document.getElementById('modalTitle').textContent = title;
+      document.getElementById('modalDesc').textContent = description;
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+      setTimeout(() => {
+        modal.classList.add('active');
+      }, 10);
+      document.body.classList.add('overflow-hidden');
+    }
+
+    function closeCertModal() {
+      modal.classList.remove('active');
+      setTimeout(() => {
+        modal.classList.add('hidden');
+        modal.classList.remove('flex');
+        document.body.classList.remove('overflow-hidden');
+      }, 200);
+    }
+
+    modal.addEventListener('click', function(e) {
+      if (e.target === this) closeCertModal();
+    });
+
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape' && !modal.classList.contains('hidden')) closeCertModal();
+    });
+  </script>
+</body>
+</html>
